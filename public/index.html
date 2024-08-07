@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Chat application</title>
+</head>
+<body>
+    <h1>Chatting..</h1>
+    <input type="text" id="message"  placeholder="Enter something...">
+    <button id="sendmessages">Send</button>
+    <div id="messages"></div>
+    <!-- <button  onclick="createConnection()">Create Web Socket Connection,dear!</button> -->
+    <script src="/socket.io/socket.io.js"></script>
+<script>
+//   var socket = io();
+</script>
+    <script>
+
+          const socker = io();
+          const sendBtn = document.getElementById('sendmessages');
+          const messageInput = document.getElementById('message');
+          const allmessages = document.getElementById('messages');
+          socker.on("message++",(message)=>{
+            console.log(message);
+            const p = document.createElement('p');
+            p.innerText  = message;
+            p.style.color = 'blue'; // adds blue color to the text
+            p.style.fontSize = '20px'; // sets font size to 20 pixels
+            allmessages.appendChild(p);
+            //this appendChild(p) helpds to show,messages on DOM.
+          })
+       sendBtn.addEventListener('click', (e)=>{
+        const message = messageInput.value;
+        // console.log(message);
+        //for sending this into server side i have to send it to server used emit()...
+        socker.emit('user-message',message);
+
+       })
+    </script>
+</body>
+</html>
